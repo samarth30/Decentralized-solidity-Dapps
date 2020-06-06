@@ -42,4 +42,4 @@ contract Election{
        candidates[_id].voteCount++; 
     }
     
-}
+} 
