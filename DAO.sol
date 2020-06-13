@@ -47,7 +47,7 @@ contract DAO{
         avaliableFunds+= msg.value;
     }
     
-    function redeemShare(uint256 amount) external{
+    function redeemShare(uint256 amount) external onlyInvestor(){
         require(shares[msg.sender] >= amount,"your account dont have enough shares");
         require(avaliableFunds >= amount,"there are not avaliable funds present right now");
         shares[msg.sender] -= amount;
@@ -55,7 +55,7 @@ contract DAO{
         msg.sender.transfer(amount);
     }
     
-    function transferShare(uint256 amount,address to) external{
+    function transferShare(uint256 amount,address to) external onlyInvestor(){
         require(shares[msg.sender] >= amount,"not have sufficent shares");
         
         shares[msg.sender] -= amount;
@@ -63,13 +63,13 @@ contract DAO{
         investors[to] = true;
     }
     
-    function createProposal(string memory name,uint amount,address payable recepient) public onlyInvestor {
+    function createProposal(string memory name,uint amount,address payable recepient) public onlyAdmin(){
         require(avaliableFunds >= amount);
         proposalCount++;
         proposals[proposalCount] = Proposal(proposalCount,name,amount,recepient,0,now+voteTime,false);
     }
     
-    function vote(uint _id) external onlyInvestor{
+    function vote(uint _id) external onlyInvestor(){
         Proposal storage _proposal = proposals[_id];
         require(votes[msg.sender][_id] == false);
         require(now < _proposal.end);
@@ -77,7 +77,7 @@ contract DAO{
         _proposal.votes+=shares[msg.sender];
     }
     
-    function executeProposal(uint _id) external onlyAdmin{
+    function executeProposal(uint _id) external onlyAdmin(){
          Proposal storage _proposal = proposals[_id];
          require(now > _proposal.end);
          require(_proposal.executed == false);
