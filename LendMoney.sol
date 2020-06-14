@@ -14,7 +14,7 @@ contract Loan{
       end = now + _duration;
       lender = msg.sender;
   }
-   
+    
    function lendIt(address payable to) external payable onlyLender(){
        if(msg.value  < 1 ether){
            revert();
