@@ -10,6 +10,7 @@ contract DeedMultiPayout {
   uint public paidPayouts;
   pragma solidity ^0.5.0;
 
+
 contract DeedMultiPayout {
   address public lawyer;
   address payable public beneficiary;
